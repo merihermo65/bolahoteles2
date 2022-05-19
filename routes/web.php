@@ -21,26 +21,45 @@ use Illuminate\Support\Facades\Mail;
 */
 
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 Auth::routes();
-
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
 Route::get('/post.avatar/{filename}', [App\Http\Controllers\AdminController::class, 'getavatar'])->name('getavatar');
 
 Route::get('/post/{filename}', [App\Http\Controllers\HomeController::class, 'getimagee'])->name('getimagee');
 
 
+/*****************************************************************************/
+/* USERS */
 
-//Auth::user()->name getinfo
+//editar usuari
 Route::get('/edit', [App\Http\Controllers\UserController::class, 'index'])->name('edit');
 
 Route::put('/edita', [App\Http\Controllers\UserController::class, 'update'])->name('edita');
 
 Route::get('/editpass', [App\Http\Controllers\UserController::class, 'updatepass'])->name('editpass');
+
+
+
+//eliminar usuari
+
+Route::get('/deleteuser', [App\Http\Controllers\UserController::class, 'deleteuser'])->name('deleteuser');
+Route::get('/deleteusersegur', [App\Http\Controllers\UserController::class, 'deleteusersegur'])->name('deleteusersegur');
+
+/*****************************************************************************/
+/* CARTA */
+//crear platos
+
+Route::get('/crea_plat', [App\Http\Controllers\CartaController::class, 'index'])->name('plat');
+
+Route::put('/crear', [App\Http\Controllers\CartaController::class, 'update'])->name('crear');
+
+Route::get('/carta', [App\Http\Controllers\CartaController::class, 'show'])->name('carta');
 
 //imagenes carta
 Route::get('/entr/{filename}', [App\Http\Controllers\CartaController::class, 'getimageE'])->name('getimageEE');
@@ -51,41 +70,18 @@ Route::get('/postre/{filename}', [App\Http\Controllers\CartaController::class, '
 
 Route::get('/vino/{filename}', [App\Http\Controllers\CartaController::class, 'getimageV'])->name('getimageV');
 
-//eliminar usuari
-
-Route::get('/deleteuser', [App\Http\Controllers\UserController::class, 'deleteuser'])->name('deleteuser');
-Route::get('/deleteusersegur', [App\Http\Controllers\UserController::class, 'deleteusersegur'])->name('deleteusersegur');
 
 
-
-//EDITAR ROLES
-Route::get('/edit-role', [App\Http\Controllers\AdminController::class, 'index'])->name('edit-role');
-
-//Route::get('/edita-role', [App\Http\Controllers\AdminController::class, 'indexupdate'])->name('edita-role');
-Route::get('/editaa-role/{filename}', [App\Http\Controllers\AdminController::class, 'update'])->name('editaa-role');
-
-//EDITAR RESERVAS
-Route::get('/edit-reserva', [App\Http\Controllers\AdminController::class, 'reservestaules'])->name('edit-reserva');
-
-Route::get('/editaa-reserva/{filename}', [App\Http\Controllers\AdminController::class, 'updatereserva'])->name('editaa-reserva');
-
-Route::get('/elimina-reserva', [App\Http\Controllers\AdminController::class, 'eliminareserva'])->name('elimina-reserva');
-
-
-
-//crear platos
-
-Route::get('/crea_plat', [App\Http\Controllers\CartaController::class, 'index'])->name('plat');
-
-Route::put('/crear', [App\Http\Controllers\CartaController::class, 'update'])->name('crear');
-
-
-Route::get('/carta', [App\Http\Controllers\CartaController::class, 'show'])->name('carta');
 
 //eliminar platos carta
 
 Route::get('/eliminaplat/{filename}/{filename2}', [App\Http\Controllers\CartaController::class, 'eliminar'])->name('eliminaplat');
 
+//detail de plato de la carta
+
+Route::get('/detailE/{filename}', [App\Http\Controllers\CartaController::class, 'detailE'])->name('detailE');
+Route::get('/detailPP/{filename}', [App\Http\Controllers\CartaController::class, 'detailPP'])->name('detailPP');
+Route::get('/detailP/{filename}', [App\Http\Controllers\CartaController::class, 'detailP'])->name('detailP');
 
 //Carta vinos
 
@@ -99,6 +95,21 @@ Route::get('/carta_vino', [App\Http\Controllers\CartaController::class, 'show2']
 Route::get('/eliminavi/{filename}', [App\Http\Controllers\CartaController::class, 'eliminarvino'])->name('eliminavi');
 
 
+
+//EDITAR ROLES
+Route::get('/edit-role', [App\Http\Controllers\AdminController::class, 'index'])->name('edit-role');
+
+Route::get('/editaa-role/{filename}', [App\Http\Controllers\AdminController::class, 'update'])->name('editaa-role');
+
+//EDITAR RESERVAS
+Route::get('/edit-reserva', [App\Http\Controllers\AdminController::class, 'reservestaules'])->name('edit-reserva');
+
+Route::get('/editaa-reserva/{filename}', [App\Http\Controllers\AdminController::class, 'updatereserva'])->name('editaa-reserva');
+
+Route::get('/elimina-reserva', [App\Http\Controllers\AdminController::class, 'eliminareserva'])->name('elimina-reserva');
+
+
+
 //crear menu
 
 Route::get('/crea_menu', [App\Http\Controllers\MenuController::class, 'index'])->name('dia');
@@ -107,15 +118,9 @@ Route::put('/Menu_created', [App\Http\Controllers\MenuController::class, 'update
 
 Route::get('/menu-dia', [App\Http\Controllers\MenuController::class, 'show'])->name('menu');
 
-//detail de plato de la carta
-
-Route::get('/detailE/{filename}', [App\Http\Controllers\CartaController::class, 'detailE'])->name('detailE');
-Route::get('/detailPP/{filename}', [App\Http\Controllers\CartaController::class, 'detailPP'])->name('detailPP');
-Route::get('/detailP/{filename}', [App\Http\Controllers\CartaController::class, 'detailP'])->name('detailP');
 
 
-
-//imgnova
+//penjar events
 
 Route::get('/imgnova', [App\Http\Controllers\EventoController::class, 'penja'])->name('imgnova');
 
@@ -124,6 +129,11 @@ Route::put('/imgnovaa', [App\Http\Controllers\EventoController::class, 'penjaimg
 
 Route::get('/image/{filename}', [App\Http\Controllers\UserController::class, 'getimage'])->name('avatar');
 
+//eliminar events
+
+
+Route::get('/veureevents', [App\Http\Controllers\AdminController::class, 'veureevents'])->name('veureevents');
+Route::get('/updateevent/{filename}', [App\Http\Controllers\AdminController::class, 'updateevent'])->name('updateevent');
 
 //Reserva
 
@@ -133,15 +143,7 @@ Route::get('/res2', [App\Http\Controllers\ReservaController::class, 'reserva'])-
 Route::get('/verres', [App\Http\Controllers\UserController::class, 'verreserva'])->name('verreserva');
 Route::get('/verres2/{filename}', [App\Http\Controllers\UserController::class, 'updateverreserva'])->name('verreserva2');
 
-//contacte
 
-Route::get('/contact-form', [App\Http\Controllers\EmailController::class,'contacto'])->name('contact-form');
-
-//detail de plato de la carta
-
-Route::get('/detailE/{filename}', [App\Http\Controllers\CartaController::class, 'detailE'])->name('detailE');
-Route::get('/detailPP/{filename}', [App\Http\Controllers\CartaController::class, 'detailPP'])->name('detailPP');
-Route::get('/detailP/{filename}', [App\Http\Controllers\CartaController::class, 'detailP'])->name('detailP');
 
 //contacte
 
@@ -153,15 +155,7 @@ Route::get('/emailcon', [App\Http\Controllers\EmailController::class,'emailconta
 
 
 
-//eliminar events
 
-
-Route::get('/veureevents', [App\Http\Controllers\AdminController::class, 'veureevents'])->name('veureevents');
-Route::get('/updateevent/{filename}', [App\Http\Controllers\AdminController::class, 'updateevent'])->name('updateevent');
-
-
-
-//reset contrassenya
 
 
 
